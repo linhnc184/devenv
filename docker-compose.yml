@@ -1,0 +1,99 @@
+version: "3.9"
+
+volumes:
+  mysql:
+    driver: 'local'
+  mongo:
+    driver: 'local'
+  redis:
+    driver: 'local'
+
+networks:
+  devenv:
+
+services:
+  nginx:
+    build: ./images/nginx
+    restart: always
+    ports:
+      - ${NGINX_PORT}:80
+    networks:
+      devenv:
+
+  redis:
+    build: ./images/redis
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - .data/redis:/data/db
+    networks:
+      devenv:
+
+  mysql:
+    build: ./images/mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=default
+    ports:
+      - ${MYSQL_PORT}:3306
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    networks:
+      devenv:
+
+  postgres:
+    build: ./images/postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1
+    volumes:
+      - .data/postgres:/var/lib/postgresql
+    ports:
+      - ${POSTGRES_PORT}:5432
+    networks:
+      devenv:
+
+  mongo:
+    build: ./images/mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - .data/mongo:/data/db
+    networks:
+      devenv:
+
+  php-fpm:
+    restart: always
+    build: ./images/php-fpm
+    networks:
+      devenv:
+
+  # tools
+  adminer:
+    build: ./images/adminer
+    restart: always
+    environment:
+      - ADMINER_DESIGN=pepa-linha
+    ports:
+      - ${ADMINER_PORT}:8080
+    networks:
+      devenv:
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - ${REDIS_COMMANDER_PORT}:8081
+    networks:
+      devenv:
+
