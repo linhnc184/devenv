@@ -17,6 +17,8 @@ services:
     restart: always
     ports:
       - ${NGINX_PORT}:80
+    volumes:
+      - ${CODE_DIR}:/var/www
     networks:
       devenv:
 
@@ -71,8 +73,10 @@ services:
       devenv:
 
   php-fpm:
-    restart: always
     build: ./images/php-fpm
+    restart: always
+    volumes:
+      - ${CODE_DIR}:/var/www
     networks:
       devenv:
 
