@@ -4,6 +4,7 @@ RUN apt-get update; \
     apt-get upgrade -y; \
     apt-get install -y --no-install-recommends \
 			curl \
+			unzip \
 			libmemcached-dev \
 			libz-dev \
 			libpq-dev \
@@ -20,6 +21,7 @@ RUN apt-get update; \
 RUN docker-php-ext-install pdo_mysql; \
     docker-php-ext-install pdo_pgsql; \
     docker-php-ext-install mongodb; \
+    docker-php-ext-install zip; \
     docker-php-ext-configure gd \
 			--prefix=/usr \
 			--with-jpeg \

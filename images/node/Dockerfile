@@ -1,11 +1,7 @@
-FROM node:16
+ARG NODE_VERSION=16
 
-ENV NODE_ENV=development
+FROM node:$NODE_VERSION
 
-COPY ["package.json", "package-lock.json*", "./"]
+RUN apt-get update
 
-RUN npm install
-
-COPY . .
-
-CMD ["node", "start"]
+RUN npm install --global npm
