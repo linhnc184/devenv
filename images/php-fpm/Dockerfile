@@ -20,8 +20,10 @@ RUN apt-get update; \
 
 RUN docker-php-ext-install pdo_mysql; \
     docker-php-ext-install pdo_pgsql; \
-    docker-php-ext-install mongodb; \
+    # docker-php-ext-install mongodb; \
+    pecl mongodb; \
     docker-php-ext-install zip; \
+    docker-php-ext-install exif \
     docker-php-ext-configure gd \
 			--prefix=/usr \
 			--with-jpeg \
