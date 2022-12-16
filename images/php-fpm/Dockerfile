@@ -5,6 +5,8 @@ RUN apt-get update; \
     apt-get install -y --no-install-recommends \
 			curl \
 			unzip \
+			zip \
+			libzip-dev \
 			libmemcached-dev \
 			libz-dev \
 			libpq-dev \
@@ -19,9 +21,6 @@ RUN apt-get update; \
     rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_mysql; \
-    docker-php-ext-install pdo_pgsql; \
-    # docker-php-ext-install mongodb; \
-    pecl mongodb; \
     docker-php-ext-install zip; \
     docker-php-ext-install exif \
     docker-php-ext-configure gd \
@@ -31,9 +30,9 @@ RUN docker-php-ext-install pdo_mysql; \
 			--with-xpm \
 			--with-freetype; \
     docker-php-ext-install gd; \
-    pecl install -o -f redis;
-
-RUN docker-php-ext-enable redis;
+    pecl install mongodb; \
+    pecl install -o -f redis; \
+		docker-php-ext-enable mongodb redis;
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

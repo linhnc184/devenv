@@ -51,19 +51,19 @@ services:
     networks:
       devenv:
 
-  postgres:
-    build: ./images/postgres
-    container_name: devenv_postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1
-    volumes:
-      - .data/postgres:/var/lib/postgresql
-    ports:
-      - ${POSTGRES_PORT}:5432
-    networks:
-      devenv:
+  # postgres:
+  #   build: ./images/postgres
+  #   container_name: devenv_postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=1
+  #   volumes:
+  #     - .data/postgres:/var/lib/postgresql
+  #   ports:
+  #     - ${POSTGRES_PORT}:5432
+  #   networks:
+  #     devenv:
 
   mongo:
     build: ./images/mongo
@@ -89,16 +89,16 @@ services:
       devenv:
 
   # tools
-  adminer:
-    build: ./images/adminer
-    container_name: devenv_adminer
-    restart: always
-    environment:
-      - ADMINER_DESIGN=pepa-linha
-    ports:
-      - ${ADMINER_PORT}:8080
-    networks:
-      devenv:
+  # adminer:
+    # build: ./images/adminer
+    # container_name: devenv_adminer
+    # restart: always
+    # environment:
+    #   - ADMINER_DESIGN=pepa-linha
+    # ports:
+    #   - ${ADMINER_PORT}:8080
+    # networks:
+    #   devenv:
 
   redis-commander:
     image: rediscommander/redis-commander:latest
