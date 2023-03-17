@@ -2,11 +2,11 @@ version: "3.9"
 
 volumes:
   mysql:
-    driver: 'local'
+    driver: 'local:delegated'
   mongo:
-    driver: 'local'
+    driver: 'local:delegated'
   redis:
-    driver: 'local'
+    driver: 'local:delegated'
 
 networks:
   devenv:
@@ -20,8 +20,8 @@ services:
     ports:
       - ${NGINX_PORT}:80
     volumes:
-      - ${CODE_DIR}:/var/www
-      - ./images/nginx/conf.d:/etc/nginx/conf.d
+      - ${CODE_DIR}:/var/www:delegated
+      - ./images/nginx/conf.d:/etc/nginx/conf.d:delegated
     networks:
       devenv:
 
@@ -32,7 +32,7 @@ services:
     ports:
       - ${REDIS_PORT}:6379
     volumes:
-      - .data/redis:/data/db
+      - .data/redis:/data/db:delegated
     networks:
       devenv:
 
@@ -47,7 +47,7 @@ services:
     ports:
       - ${MYSQL_PORT}:3306
     volumes:
-      - .data/mysql:/var/lib/mysql
+      - .data/mysql:/var/lib/mysql:delegated
     networks:
       devenv:
 
@@ -59,7 +59,7 @@ services:
   #     - POSTGRES_USER=postgres
   #     - POSTGRES_PASSWORD=1
   #   volumes:
-  #     - .data/postgres:/var/lib/postgresql
+  #     - .data/postgres:/var/lib/postgresql:delegated
   #   ports:
   #     - ${POSTGRES_PORT}:5432
   #   networks:
@@ -75,7 +75,7 @@ services:
     ports:
       - ${MONGO_PORT}:27017
     volumes:
-      - .data/mongo:/data/db
+      - .data/mongo:/data/db:delegated
     networks:
       devenv:
 
@@ -84,7 +84,7 @@ services:
     container_name: devenv_php-fpm
     restart: always
     volumes:
-      - ${CODE_DIR}:/var/www
+      - ${CODE_DIR}:/var/www:delegated
     networks:
       devenv:
 
